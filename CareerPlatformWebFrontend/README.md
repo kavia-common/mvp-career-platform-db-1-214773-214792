@@ -31,18 +31,25 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 This app follows Create React App conventions:
 - Build-time variables must be prefixed with `REACT_APP_`.
-- The Dockerfile does not read or `cat` any `.env` files.
+- The Dockerfile does not read or `cat` any `.env` files and does not `COPY` `.env*` into the image.
 - The build and container run successfully even if no `.env` exists.
+- A `.dockerignore` is included to exclude `.env*` from the build context for safety.
 
 You may provide an optional `.env` locally for development:
-1. Copy `.env.example` to `.env`
-2. Adjust values as needed (e.g., `REACT_APP_API_BASE_URL=/api/v1`)
+1. Copy `.env.example` to `.env` (optional).
+2. Adjust values as needed (e.g., `REACT_APP_API_BASE_URL=/api/v1`).
 
-In CI or Docker builds, you can pass variables as build args/envs:
+In CI or Docker builds, pass variables directly as build args/envs:
 - Example: `docker build --build-arg REACT_APP_API_BASE_URL=https://api.example.com/api/v1 -t career-frontend .`
 - Or: `REACT_APP_API_BASE_URL=https://api.example.com/api/v1 npm run build`
 
-If no variables are provided, client code should default to `/api/v1` and sensible defaults.
+If no variables are provided, client code defaults to `/api/v1` and sensible defaults via `src/env.js`.
+
+Note for shell entrypoints (if you add one later): avoid wildcard `.env` loads. If local optional loading is needed, use a guarded pattern:
+```sh
+if [ -f .env ]; then export $(grep -v '^#' .env | xargs); fi
+```
+Do not use `cat .env*` or `set -a; source .env; set +a` in build or production images.
 
 ## Customization
 

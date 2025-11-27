@@ -1,8 +1,10 @@
-//
-// PUBLIC_INTERFACE
-// getConfig returns frontend configuration derived from build-time envs with sane defaults.
-// This module does NOT require a .env file and will not throw if variables are missing.
-//
+/**
+ * PUBLIC_INTERFACE
+ * getConfig returns frontend configuration derived from build-time envs with sane defaults.
+ * - Does not require a .env file.
+ * - Safe for CI/Docker builds with no local environment files.
+ * - CRA injects REACT_APP_* at build time when provided; otherwise defaults apply.
+ */
 export function getConfig() {
   /** Compute values from process.env (CRA injects REACT_APP_*) or fallback defaults. */
   const {

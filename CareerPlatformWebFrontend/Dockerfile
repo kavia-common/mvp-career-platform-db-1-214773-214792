@@ -13,6 +13,7 @@ COPY . .
 
 # Build without requiring .env. CRA picks up REACT_APP_* defined at build-time if provided.
 # No 'cat' of any env files here; this must succeed with no .env present.
+# No COPY of .env* into the image; see .dockerignore for exclusion.
 RUN npm run build
 
 # 2) Runtime stage using nginx

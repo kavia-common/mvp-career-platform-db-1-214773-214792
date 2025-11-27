@@ -1,0 +1,21 @@
+# Exclude environment files and secrets from build context
+.env
+.env.*
+*.env
+*.env.*
+
+# Node modules and build artifacts
+node_modules
+build
+dist
+
+# Logs and lock/status files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+post_process_status.lock
+
+# Misc
+.DS_Store
+.git
+.gitignore
