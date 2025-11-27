@@ -47,9 +47,9 @@ If no variables are provided, client code defaults to `/api/v1` and sensible def
 
 Note for shell entrypoints (if you add one later): avoid wildcard `.env` loads. If local optional loading is needed, use a guarded pattern:
 ```sh
-if [ -f .env ]; then export $(grep -v '^#' .env | xargs); fi
+if [ -f ./.env ]; then export $(grep -v '^#' ./.env | xargs); fi
 ```
-Do not use `cat .env*` or `set -a; source .env; set +a` in build or production images.
+Do not use `cat .env*`, `cat '*.env'`, or `set -a; source .env; set +a` in build or production images. The Dockerfile and npm scripts do not read any `.env` files, and the image must build cleanly without a `.env` present. A `.dockerignore` is included to prevent `.env*` from entering the build context.
 
 ## Customization
 
