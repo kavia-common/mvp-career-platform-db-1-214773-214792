@@ -27,6 +27,23 @@ Launches the test runner in interactive watch mode.
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
+## Environment Variables (No .env required at build time)
+
+This app follows Create React App conventions:
+- Build-time variables must be prefixed with `REACT_APP_`.
+- The Dockerfile does not read or `cat` any `.env` files.
+- The build and container run successfully even if no `.env` exists.
+
+You may provide an optional `.env` locally for development:
+1. Copy `.env.example` to `.env`
+2. Adjust values as needed (e.g., `REACT_APP_API_BASE_URL=/api/v1`)
+
+In CI or Docker builds, you can pass variables as build args/envs:
+- Example: `docker build --build-arg REACT_APP_API_BASE_URL=https://api.example.com/api/v1 -t career-frontend .`
+- Or: `REACT_APP_API_BASE_URL=https://api.example.com/api/v1 npm run build`
+
+If no variables are provided, client code should default to `/api/v1` and sensible defaults.
+
 ## Customization
 
 ### Colors
@@ -52,6 +69,15 @@ Common components include:
 - Container (`.container`)
 - Navigation (`.navbar`)
 - Typography (`.title`, `.subtitle`, `.description`)
+
+## Production image
+
+A multi-stage Dockerfile is provided and builds without any `.env`:
+```bash
+docker build -t career-frontend .
+docker run -p 8080:80 career-frontend
+```
+By default, the app assumes the backend is accessible at `/api/v1` on the same host (recommended to configure via reverse proxy).
 
 ## Learn More
 

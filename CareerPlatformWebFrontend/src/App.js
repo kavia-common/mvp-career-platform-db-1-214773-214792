@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { getConfig } from './env';
 
 // PUBLIC_INTERFACE
 function App() {
   const [theme, setTheme] = useState('light');
+  const config = getConfig();
 
   // Effect to apply theme to document element
   useEffect(() => {
@@ -32,6 +34,12 @@ function App() {
         </p>
         <p>
           Current theme: <strong>{theme}</strong>
+        </p>
+        <p>
+          API Base URL: <code>{config.apiBaseUrl}</code>
+        </p>
+        <p>
+          Environment: <strong>{config.envName}</strong>
         </p>
         <a
           className="App-link"
